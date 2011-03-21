@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Phono :: Node :: CoucdhDB :: Asterisk :: Remote Agent</title>
+<link rel="stylesheet" href="style/main.css" type="text/css">
+</head>
+<body>
+<div id="phono">
+<input id="call" type="button" disabled="true" value="Phono is Loading..." /><br/>
+<input id="hangup" type="button" disabled="true" value="Hangup call" />
+</div>
+
+</body>
+<script src="vendor/couchapp/loader.js"></script>
+<script type="text/javascript" charset="utf-8">
+	$.couch.app(function(app) {
+
+		var db = $.couch.db('remoteagent');
+		var phonoDoc = new Object();
+		
+		function saveDoc(doc) {
+			db.saveDoc(phonoDoc);
+		}
+		
+		function removeDoc(doc) {
+			db.removeDoc(phonoDoc);
+		}
+
+		$(document).ready(function() {
+
+			var aCall;
+			var phonoObject = $.phono({
+				apiKey : "b277e3b72df288176e0d3b14db5de29b",
+
+				onReady : function() {
+
+					// Save Phono session ID to CouchDB.
+					phonoDoc._id = this.sessionId;
+					phonoDoc.state = "ready";
+					saveDoc(phonoDoc);
+
+					// Write info. to console.
+					console.log("Connected");
+					console.log("Phono Session ID: " + this.sessionId);
+					$("#call").attr("disabled", true).val("Loaded. Waiting for call.");
+				},
+				
+				phone: {
+				    onIncomingCall: function(event) {
+				    	aCall = event.call;
+				    	$("#call").attr("disabled", false).val("Incoming call. Click to accept.");
+				    },
+				    
+				    onAnswer: function() {
+						$("#call").attr("disabled", true).val("Call connected.");
+						$("#hangup").attr("disabled", false).val("Hangup call");
+				      },
+				      
+				    onHangup: function() {
+						phonoDoc.state = "ready";
+						saveDoc(phonoDoc);
+				    	$("#call").attr("disabled", true).val("Waiting for call.");
+				    	$("#hangup").attr("disabled", true).val("Hangup call");
+				      }
+				  }
+
+			});
+			
+			$("#call").click(function() {
+				console.log("Answering the incoming call.");
+				phonoDoc.state = "notready";
+				saveDoc(phonoDoc);
+				aCall.answer();
+				$("#call").attr("disabled", true).val("Call connected.");
+				$("#hangup").attr("disabled", false).val("Hangup call");
+			});
+			
+			$("#hangup").click(function() {
+				console.log("Hanging up the call.");
+				aCall.hangup();
+				phonoDoc.state = "ready";
+				saveDoc(phonoDoc);
+			    $("#call").attr("disabled", true).val("Waiting for call.");
+			    $("#hangup").attr("disabled", true).val("Hangup call");
+			});
+
+		});
+		
+		$(window).unload(function() {
+			removeDoc(phonoDoc);
+		});
+
+	});
+</script>
+<script src="/_utils/script/json2.js"></script>
+<script src="/_utils/script/jquery.js"></script>
+<script src="/_utils/script/jquery.couch.js"></script>
+<script src="http://s.phono.com/releases/0.2/jquery.phono.js"></script>
+</html>

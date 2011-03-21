@@ -1,0 +1,29 @@
+[{
+  "from": "",
+  "to": "index.html"
+},
+{
+  "from": "vendor/*",
+  "to": "vendor/*"
+},
+{
+  "from": "app/*",
+  "to": "app/*"
+},
+{
+  "from": "config/*",
+  "to": "config/*"
+},
+{
+  "from": "style/*",
+  "to": "style/*"
+},
+{
+  "from": "_view/*",
+  "to": "_view/*"
+},
+{
+  "from": "remoteagent/*",
+  "to": "../../*"
+}
+]
