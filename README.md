@@ -1,11 +1,11 @@
 ## (P)hono :: (C)ouchDB :: (N)ode :: (A)sterisk :: Remote Agent Solution
 
-A complete remote agent / remote call center solutiom built with JavaScript. This solution uses:
+A complete remote agent / remote call center solution built with JavaScript. This solution uses:
 
 * [Asterisk](http://asterisk.org) - The open source telephony platform.
 * [Node.js](http://nodejs.org) - Server-side JavaScript framework.
 * [CouchBase](http://couchbase.com) - Document oriented database.
-* [Phono](http://phono.com) - jQuery plugin for building cbrowser-based communication apps.
+* [Phono](http://phono.com) - jQuery plugin for building browser-based communication apps.
 
 ## Deploying this app
 

@@ -24,8 +24,6 @@ var couchDBOptions = {
 		method: 'GET'
 };
 
-
-
 //Method to access AGI variables submitted from Asterisk.
 function setAgiVars(data) {
 	var values = data.toString().split("\n");
@@ -53,7 +51,6 @@ server.addListener('connection', lookupTransferAddress);
 
 // Method to execute AGI logic.
 function lookupTransferAddress(stream) {
-  
 	
   stream.setEncoding('utf8');
   
