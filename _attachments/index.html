@@ -17,6 +17,7 @@
 
 		var db = $.couch.db('remoteagent');
 		var phonoDoc = new Object();
+		var dispatcher = {};
 		
 		function saveDoc(doc) {
 			db.saveDoc(phonoDoc);
@@ -49,19 +50,15 @@
 				    onIncomingCall: function(event) {
 				    	aCall = event.call;
 				    	$("#call").attr("disabled", false).val("Incoming call. Click to accept.");
-				    },
-				    
-				    onAnswer: function() {
-						$("#call").attr("disabled", true).val("Call connected.");
-						$("#hangup").attr("disabled", false).val("Hangup call");
-				      },
-				      
-				    onHangup: function() {
-						phonoDoc.state = "ready";
-						saveDoc(phonoDoc);
-				    	$("#call").attr("disabled", true).val("Waiting for call.");
-				    	$("#hangup").attr("disabled", true).val("Hangup call");
-				      }
+				    	Phono.events.bind(aCall, {
+         	    			onHangup: function(event) {
+         	    			    $(dispatcher).trigger("callHungUp");
+         	    			},
+         	    			onError: function(event) {
+         	    			    $(dispatcher).trigger("callHungUp");
+         	    			}
+         	   			});
+				    }
 				  }
 
 			});
@@ -76,6 +73,10 @@
 			});
 			
 			$("#hangup").click(function() {
+				$(dispatcher).trigger("callHungUp");
+			});
+			
+			$(dispatcher).bind("callHungUp", function(){
 				console.log("Hanging up the call.");
 				aCall.hangup();
 				phonoDoc.state = "ready";
