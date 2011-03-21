@@ -1,16 +1,81 @@
 /* add styles here */
 
 body {
-  font:1em Helvetica, sans-serif;
+  font-family: arial, serif;;
   padding:4px;
-}
-
-h1 {
-  margin-top:0;
+  font-size:88%;
+  color:#333;
+  background:#444C57 url("background.png");
 }
 
 #account {
   float:right;
+}
+
+#phono{
+	position: absolute;
+	top:50%;
+	left:50%;
+	width:400px;
+	height:300px;
+	margin-top:-150px;
+	margin-left:-200px;
+	background:#efefef;
+	border:5px solid #efefef;
+	-webkit-box-shadow:0px 1px 10px #000;
+	border-radius:10px;
+}
+
+#status{
+	position:absolute;
+	top:-24px;
+	left:-24px;
+	width:48px;
+	height:48px;
+}
+
+#status-text{
+	margin:0 auto;
+	margin-top:110px;
+	font-size:240%;
+	width:380px;
+	text-align:center;
+}
+
+.available{
+	background:url("available.png") no-repeat 0 0;
+}
+
+.unnavailable{
+	background:url("unnavailable.png") no-repeat 0 0;
+}
+
+.loading{
+	background:url("loading.png") no-repeat 0 0;
+}
+
+.button{
+	width:200px;
+	margin:0 auto;
+	height:40px;
+	line-height:40px;
+	text-decoration:none;
+	border:3px solid #333;
+	text-align:center;
+	padding:8px 15px;
+	color:#fff;
+	font-size:200%;
+	margin-top:100px;
+	border-radius:10px;
+	display:none;
+}
+
+.answer{
+	background:green;
+}
+
+.hangup{
+	background:red;
 }
 
 #profile {

@@ -3,13 +3,19 @@
 <head>
 <title>Phono :: Node :: CoucdDB :: Asterisk :: Remote Agent</title>
 <link rel="stylesheet" href="style/main.css" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:bold' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <div id="phono">
+<div id="status" class="loading"></div>
+<div id="status-text">Connecting...</div>
+<a href="#" class="button answer">Answer</a>
+<a href="#" class="button hangup">Hangup</a>
+<!--
 <input id="call" type="button" disabled="true" value="Phono is Loading..." /><br/>
 <input id="hangup" type="button" disabled="true" value="Hangup call" />
+-->
 </div>
-
 </body>
 <script src="vendor/couchapp/loader.js"></script>
 <script type="text/javascript" charset="utf-8">
@@ -43,13 +49,17 @@
 					// Write info. to console.
 					console.log("Connected");
 					console.log("Phono Session ID: " + this.sessionId);
-					$("#call").attr("disabled", true).val("Loaded. Waiting for call.");
+					$("#status").removeClass("loading").addClass("available");
+					$("#status-text").text("Waiting for a call");
+					//$("#call").attr("disabled", true).val("Loaded. Waiting for call.");
 				},
 				
 				phone: {
+				    ringTone: "http://s.phono.com/ringtones/Diggztone_Agent94.mp3",
 				    onIncomingCall: function(event) {
 				    	aCall = event.call;
-				    	$("#call").attr("disabled", false).val("Incoming call. Click to accept.");
+				    	$("#status-text").hide();
+				    	$(".answer").css("display","block");
 				    	Phono.events.bind(aCall, {
          	    			onHangup: function(event) {
          	    			    $(dispatcher).trigger("callHungUp");
@@ -63,16 +73,17 @@
 
 			});
 			
-			$("#call").click(function() {
+			$(".answer").click(function() {
 				console.log("Answering the incoming call.");
 				phonoDoc.state = "notready";
 				saveDoc(phonoDoc);
 				aCall.answer();
-				$("#call").attr("disabled", true).val("Call connected.");
-				$("#hangup").attr("disabled", false).val("Hangup call");
+				$(".answer").hide();
+				$(".hangup").css("display","block");
+				$("#status").removeClass("available").addClass("unnavailable");
 			});
 			
-			$("#hangup").click(function() {
+			$(".hangup").click(function() {
 				$(dispatcher).trigger("callHungUp");
 			});
 			
@@ -81,8 +92,9 @@
 				aCall.hangup();
 				phonoDoc.state = "ready";
 				saveDoc(phonoDoc);
-			    $("#call").attr("disabled", true).val("Waiting for call.");
-			    $("#hangup").attr("disabled", true).val("Hangup call");
+			    $(".hangup").hide();
+			    $("#status-text").text("Waiting for a call").show();
+			    $("#status").removeClass("unnavailable").addClass("available");
 			});
 			
 			$(window).bind('beforeunload', function(){ 
