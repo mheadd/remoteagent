@@ -1,4 +1,4 @@
-## (P)hono :: (C)oucdhDB :: (N)ode :: (A)sterisk :: Remote Agent Solution
+## (P)hono :: (C)ouchDB :: (N)ode :: (A)sterisk :: Remote Agent Solution
 
 A complete remote agent / remote call center solutiom built with JavaScript. This solution uses:
 
