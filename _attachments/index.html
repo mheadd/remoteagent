@@ -22,7 +22,7 @@
 			db.saveDoc(phonoDoc);
 		}
 		
-		function removeDoc(doc) {
+		function removeDoc() {
 			db.removeDoc(phonoDoc);
 		}
 
@@ -83,11 +83,11 @@
 			    $("#call").attr("disabled", true).val("Waiting for call.");
 			    $("#hangup").attr("disabled", true).val("Hangup call");
 			});
+			
+			$(window).bind('beforeunload', function(){ 
+				removeDoc();
+			});
 
-		});
-		
-		$(window).unload(function() {
-			removeDoc(phonoDoc);
 		});
 
 	});
