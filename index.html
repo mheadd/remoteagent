@@ -46,22 +46,26 @@
       <span class="small">by <a href="http://github.com/mheadd">mheadd</a></span></h1>
 
     <div class="description">
-      A complete remote agent / remote call center solution built CouchDB, Tropo and the Phono SDK.
+      A complete remote agent / remote call center solution built with CouchDB, Tropo and the Phono SDK.
     </div>
 
-    <p>RemoteAgent is a call center application that lives in the cloud.
+    <p>RemoteAgent is a call center application that lives in the cloud.</p>
+    <p>It's a CouchApp that serves Phono instances directly from a CouchDB instance, and uses the built in features if CouchDB to deliver the SIP address of an available agent to a telephony engine.</p>
+    <p>RemoteAgent support advanced call center features like custom SIP headers and screen pops. It can be run using a combination of Asterisk and Node.js, or it may be run entirely in the cloud using the Tropo cloud communication platform.</p>
+    
+    <div>
+    <object width="640" height="390"><param name="movie" value="http://www.youtube.com/v/UpfjMhfsc9o?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/UpfjMhfsc9o?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="640" height="390"></embed></object>
+    </div>
+    
+    <h2>Dependencies</h2>
+    <p>Use of this solution requires:</p>
+    <ul>
+    <li>A <a href="https://www.tropo.com/account/register.jsp">Tropo</a> account.</li>
+    <li>A <a href="http://phono.com/users/new">Phono</a> API key.</li>
+    <li>An instance of the open source NoSQL database, <a href="http://www.iriscouch.com/">CouchDB</a>.</li>
+    <li>The <a href="http://couchapp.org/page/index">CouchApp</a> command line utility for deploying CouchApps.</li>
+    </ul>
 
-It's a CouchApp that serves Phono instances directly from a CouchDB instance, and uses the built in features if CouchDB to deliver the SIP address of an available agent to a telephony engine.
-
-RemoteAgent support advanced call center features like custom SIP headers and screen pops.
-
-It can be run using a combination of Asterisk and Node.js, or it may be run entirely in the cloud using the Tropo cloud communication platform.</p><h2>Dependencies</h2>
-<p>Use of this solution requires:
-
-* A Tropo account.
-* A Phono API key.
-* An instance of the open source NoSQL database, CouchDB.
-* The CouchApp command line utility for deploying CouchApps.</p>
 <h2>License</h2>
 <p>MIT License</p>
 <h2>Authors</h2>
