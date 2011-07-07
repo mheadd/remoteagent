@@ -42,6 +42,22 @@ body {
 	text-align:center;
 }
 
+#screen-pop{
+    	position: absolute;
+	top:2%;
+	left:50%;
+	width:400px;
+	height:60px;
+	margin-top:20px;
+	margin-left:-200px;
+	font-size:140%;
+	background:#efefef;
+	border:5px solid #efefef;
+	-webkit-box-shadow:0px 1px 10px #000;
+	border-radius:10px;
+     text-align:center;
+}
+
 .available{
 	background:url("available.png") no-repeat 0 0;
 }

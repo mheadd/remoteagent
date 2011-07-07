@@ -22,16 +22,28 @@ function lookupAgent() {
 
 try {
 answer();
-  $agentList = lookupAgent();
+
+    // Look up the list of agents.
+    $agentList = lookupAgent();
+    
     if($agentList) {
       $agents = json_decode($agentList);
+      
+      // If no agents availalbe, tell the caller.
       if(count($agents->rows) == 0) {
         say("Sorry, no agents available.");
       }
-      else say("Please hold while your call is transferred.");
-      transfer($agents->rows[0]->key);
+      // Otherwise, send IM screen pop and transfer to the agent Phono instance.
+      else {
+        $agent = $agents->rows[0]->key;
+        $callerID = $currentCall->callerID;
+        message("Incoming call from $callerID", array("network" => "JABBER", "to" => $agent));
+        say("Please hold while your call is transferred.");
+        transfer($agent);
+      }
     }
-    else {
+    // No response from CouchDB instance.
+    else 
       say("Sorry, no agents available.");
     }
   hangup();

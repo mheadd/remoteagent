@@ -16,6 +16,7 @@
 <input id="hangup" type="button" disabled="true" value="Hangup call" />
 -->
 </div>
+<div id="screen-pop"></div>
 </body>
 <script src="vendor/couchapp/loader.js"></script>
 <script type="text/javascript" charset="utf-8">
@@ -37,7 +38,7 @@
 
 			var aCall;
 			var phonoObject = $.phono({
-				apiKey : "b277e3b72df288176e0d3b14db5de29b",
+				apiKey : "your-api-key",
 
 				onReady : function() {
 
@@ -50,6 +51,7 @@
 					console.log("Connected");
 					console.log("Phono Session ID: " + this.sessionId);
 					$("#status").removeClass("loading").addClass("available");
+					$("#screen-pop").append("<p id=\"caller-id\"> = = = = = = = = </p>");
 					$("#status-text").text("Waiting for a call");
 					//$("#call").attr("disabled", true).val("Loaded. Waiting for call.");
 				},
@@ -62,14 +64,24 @@
 				    	$(".answer").css("display","block");
 				    	Phono.events.bind(aCall, {
          	    			onHangup: function(event) {
-         	    			    $(dispatcher).trigger("callHungUp");
+               	    		$("#caller-id").remove();
+               	    		$("#screen-pop").append("<p id=\"caller-id\"> = = = = = = = = </p>");
+          	    			$(dispatcher).trigger("callHungUp");
          	    			},
          	    			onError: function(event) {
          	    			    $(dispatcher).trigger("callHungUp");
          	    			}
          	   			});
 				    }
-				  }
+				  },
+				  
+				  messaging: {
+                      onMessage: function(event) {
+                        var message = event.message;
+                        $("#caller-id").remove();
+                        $("#screen-pop").append("<p id=\"caller-id\">" + message.body + "</p>");                       
+                      }
+                    }
 
 			});
 			
