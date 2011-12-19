@@ -1,12 +1,12 @@
-// Include required modules. 
+// Include required modules.
 var net = require('net');
 var http = require('http');
 var sys = require('sys');
 
 cochDBHost = process.ARGV[2] || "127.0.0.1";
 cochDBPort = process.ARGV[3] || 5984;
-agiHost = process.ARGV[4] || "127.0.0.1"; 
-agiPort = process.ARGV[5] || 4573; 
+agiHost = process.ARGV[4] || "127.0.0.1";
+agiPort = process.ARGV[5] || 4573;
 
 //An array to hold AGI variables submitted from Asterisk.
 var agiVars = new Array();
@@ -51,30 +51,30 @@ server.addListener('connection', lookupTransferAddress);
 
 // Method to execute AGI logic.
 function lookupTransferAddress(stream) {
-	
+
   stream.setEncoding('utf8');
-  
+
   stream.addListener('connect', function() {
   	sys.puts("Got a connection from Asterisk.");
   });
-  
-  stream.addListener('data', function(data) { 
-	  
+
+  stream.addListener('data', function(data) {
+
 	  	// When Asterisk starts the AGI script, it will pass channel variables.
 	  	if(!agiVars.size()) {
-	  		
+
 		  	// Populate agiVars array.
 	  		setAgiVars(data);
-	  		
+
 			// Write some debug output.
 			sys.puts("Getting a call from: " + agiVars["agi_calleridname"]);
-			
+
 			// Lookup extension to transfer call to.
 			var request = http.request(couchDBOptions);
 			request.end();
-				
-			var json = '';			
-			request.on('response', function(response) {			
+
+			var json = '';
+			request.on('response', function(response) {
 				response.on('data', function (chunk) {
 					json += chunk;
 				});
@@ -90,12 +90,12 @@ function lookupTransferAddress(stream) {
 						stream.end("EXEC Hangup");
 					}
 				});
-			}); 	
+			});
 	  	}
-	  	
+
 	  	else {
 	  		sys.puts("Response from Asterisk: " + data);
-	  	}	  
+	  	}
 
   });
 
@@ -103,7 +103,7 @@ function lookupTransferAddress(stream) {
 	  sys.puts("Connection closed.");
 	  clearAgiVars();
   });
-  
+
   stream.addListener('error', function() {
 	  stream.end();
   });

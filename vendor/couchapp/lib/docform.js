@@ -41,7 +41,7 @@ function docForm(formSelector, opts) {
             return;
           }
       }
-      
+
       while (parts.length > 0) {
         frontObj[frontName] = frontObj[frontName] || {};
         frontObj = frontObj[frontName];
@@ -50,7 +50,7 @@ function docForm(formSelector, opts) {
       frontObj[frontName] = val;
     });
   }
-  
+
   // Apply the behavior
   $(formSelector).submit(function(e) {
     e.preventDefault();
@@ -63,7 +63,7 @@ function docForm(formSelector, opts) {
         if (opts.success) {opts.success(resp, localFormDoc);}
       }
     });
-    
+
     return false;
   });
 
@@ -74,7 +74,7 @@ function docForm(formSelector, opts) {
     opts.fields.forEach(function(field) {
       var parts = field.split('-');
       var run = true, frontObj = doc, frontName = parts.shift();
-      while (frontObj && parts.length > 0) {                
+      while (frontObj && parts.length > 0) {
         frontObj = frontObj[frontName];
         frontName = parts.shift();
       }
@@ -88,7 +88,7 @@ function docForm(formSelector, opts) {
       }
     });
   }
-  
+
   if (opts.id) {
     db.openDoc(opts.id, {
       attachPrevRev : opts.attachPrevRev,
@@ -108,7 +108,7 @@ function docForm(formSelector, opts) {
   var instance = {
     deleteDoc : function(opts) {
       opts = opts || {};
-      if (confirm("Really delete this document?")) {                
+      if (confirm("Really delete this document?")) {
         db.removeDoc(localFormDoc, opts);
       }
     },

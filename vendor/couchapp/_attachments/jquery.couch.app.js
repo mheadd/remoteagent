@@ -11,7 +11,7 @@
 // the License.
 
 // Usage: The passed in function is called when the page is ready.
-// CouchApp passes in the app object, which takes care of linking to 
+// CouchApp passes in the app object, which takes care of linking to
 // the proper database, and provides access to the CouchApp helpers.
 // $.couch.app(function(app) {
 //    app.db.view(...)
@@ -92,14 +92,14 @@
       }
       var exports = {};
       var resolved = resolveModule(name, name.split('/'), parents, ddoc);
-      var source = resolved[0]; 
+      var source = resolved[0];
       parents = resolved[1];
       var s = "var func = function (exports, require) { " + source + " };";
       try {
         eval(s);
         func.apply(ddoc, [exports, function(name) {return require(name, parents)}]);
-      } catch(e) { 
-        throw ["error","compilation_error","Module require('"+name+"') raised error "+e.toSource()]; 
+      } catch(e) {
+        throw ["error","compilation_error","Module require('"+name+"') raised error "+e.toSource()];
       }
       setCachedModule(name, parents, exports);
       return exports;
@@ -146,7 +146,7 @@
       docForm : docForm, // deprecated
       req : mockReq()
     }, $.couch.app.app);
-    function handleDDoc(ddoc) {        
+    function handleDDoc(ddoc) {
       if (ddoc) {
         appExports.ddoc = ddoc;
         appExports.require = makeRequire(ddoc);
@@ -161,7 +161,7 @@
     if ($.couch.app.ddocs[design.doc_id]) {
       $(function() {handleDDoc($.couch.app.ddocs[design.doc_id])});
     } else {
-      // only open 1 connection for this ddoc 
+      // only open 1 connection for this ddoc
       if ($.couch.app.ddoc_handlers[design.doc_id]) {
         // we are already fetching, just wait
         $.couch.app.ddoc_handlers[design.doc_id].push(handleDDoc);

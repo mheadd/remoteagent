@@ -72,7 +72,7 @@ var Mustache = function() {
             this.ctag);
       return template.replace(regex, function(match, pragma, options) {
         if(!that.pragmas_implemented[pragma]) {
-          throw({message: 
+          throw({message:
             "This implementation of mustache doesn't understand the '" +
             pragma + "' pragma"});
         }

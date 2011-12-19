@@ -6,5 +6,5 @@ function(e, name, pass) {
     success : function(r) {
       elem.trigger("_init")
     }
-  });      
+  });
 }

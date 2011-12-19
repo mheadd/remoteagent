@@ -25,11 +25,11 @@
 		var db = $.couch.db('remoteagent');
 		var phonoDoc = new Object();
 		var dispatcher = {};
-		
+
 		function saveDoc(doc) {
 			db.saveDoc(phonoDoc);
 		}
-		
+
 		function removeDoc() {
 			db.removeDoc(phonoDoc);
 		}
@@ -55,7 +55,7 @@
 					$("#status-text").text("Waiting for a call");
 					//$("#call").attr("disabled", true).val("Loaded. Waiting for call.");
 				},
-				
+
 				phone: {
 				    ringTone: "http://s.phono.com/ringtones/Diggztone_DigitalSymmetry.mp3",
 				    onIncomingCall: function(event) {
@@ -74,17 +74,17 @@
          	   			});
 				    }
 				  },
-				  
+
 				  messaging: {
                       onMessage: function(event) {
                         var message = event.message;
                         $("#caller-id").remove();
-                        $("#screen-pop").append("<p id=\"caller-id\">" + message.body + "</p>");                       
+                        $("#screen-pop").append("<p id=\"caller-id\">" + message.body + "</p>");
                       }
                     }
 
 			});
-			
+
 			$(".answer").click(function() {
 				console.log("Answering the incoming call.");
 				phonoDoc.state = "notready";
@@ -94,11 +94,11 @@
 				$(".hangup").css("display","block");
 				$("#status").removeClass("available").addClass("unnavailable");
 			});
-			
+
 			$(".hangup").click(function() {
 				$(dispatcher).trigger("callHungUp");
 			});
-			
+
 			$(dispatcher).bind("callHungUp", function(){
 				console.log("Hanging up the call.");
 				aCall.hangup();
@@ -108,8 +108,8 @@
 			    $("#status-text").text("Waiting for a call").show();
 			    $("#status").removeClass("unnavailable").addClass("available");
 			});
-			
-			$(window).bind('beforeunload', function(){ 
+
+			$(window).bind('beforeunload', function(){
 				removeDoc();
 			});
 
