@@ -12,7 +12,7 @@ function $$(node) {
 
 (function($) {
   // utility functions used in the implementation
-  
+
   function forIn(obj, fun) {
     var name;
     for (name in obj) {
@@ -31,7 +31,7 @@ function $$(node) {
             return f.apply(this, arguments);
           } catch(e) {
             // IF YOU SEE AN ERROR HERE IT HAPPENED WHEN WE TRIED TO RUN YOUR FUNCTION
-            $.log({"message": "Error in evently function.", "error": e, 
+            $.log({"message": "Error in evently function.", "error": e,
               "src" : fun, "hint":hint});
             throw(e);
           }
@@ -40,7 +40,7 @@ function $$(node) {
     }
     return fun;
   };
-  
+
   function runIfFun(me, fun, args) {
     // if the field is a function, call it, bound to the widget
     var f = funViaString(fun, me);
@@ -69,7 +69,7 @@ function $$(node) {
     changesDBs : {},
     changesOpts : {}
   };
-  
+
   function extractFrom(name, evs) {
     return evs[name];
   };
@@ -134,21 +134,21 @@ function $$(node) {
     forIn(events, function(name, h) {
       eventlyHandler(elem, name, h, args);
     });
-    
+
     if (events._init) {
       elem.trigger("_init", args);
     }
-    
+
     if (app && events._changes) {
       $("body").bind("evently-changes-"+app.db.name, function() {
-        elem.trigger("_changes");        
+        elem.trigger("_changes");
       });
       followChanges(app);
       elem.trigger("_changes");
     }
   };
-  
-  // eventlyHandler applies the user's handler (h) to the 
+
+  // eventlyHandler applies the user's handler (h) to the
   // elem, bound to trigger based on name.
   function eventlyHandler(elem, name, h, args) {
     if ($.evently.log) {
@@ -161,13 +161,13 @@ function $$(node) {
     }
     var f = funViaString(h, name);
     if (typeof f == "function") {
-      elem.bind(name, {args:args}, f); 
+      elem.bind(name, {args:args}, f);
     } else if (typeof f == "string") {
       elem.bind(name, {args:args}, function() {
         $(this).trigger(f, arguments);
         return false;
       });
-    } else if ($.isArray(h)) { 
+    } else if ($.isArray(h)) {
       // handle arrays recursively
       for (var i=0; i < h.length; i++) {
         eventlyHandler(elem, name, h[i], args);
@@ -185,12 +185,12 @@ function $$(node) {
       });
     }
   };
-  
+
   $.fn.replace = function(elem) {
     // $.log("Replace", this)
     $(this).empty().append(elem);
   };
-  
+
   // todo: ability to call this
   // to render and "prepend/append/etc" a new element to the host element (me)
   // as well as call this in a way that replaces the host elements content
@@ -235,27 +235,27 @@ function $$(node) {
       if (h.after) {
         runIfFun(me, h.after, args);
       }
-    }    
+    }
   };
-  
+
   // todo this should return the new element
   function mustachioed(me, h, args) {
     var partials = $$(me).partials;
     return $($.mustache(
       runIfFun(me, h.mustache, args),
-      runIfFun(me, h.data, args), 
+      runIfFun(me, h.data, args),
       runIfFun(me, $.extend(true, partials, h.partials), args)));
   };
-  
-  function runAsync(me, h, args) {  
+
+  function runAsync(me, h, args) {
     // the callback is the first argument
     funViaString(h.async, me).apply(me, [function() {
-      renderElement(me, h, 
+      renderElement(me, h,
         $.argsToArray(arguments).concat($.argsToArray(args)), false, true);
     }].concat($.argsToArray(args)));
   };
-  
-  
+
+
   function runQuery(me, h, args) {
     // $.log("runQuery: args", args)
     var app = $$(me).app;
@@ -264,14 +264,14 @@ function $$(node) {
     var viewName = qu.view;
     var userSuccess = qu.success;
     // $.log("qType", qType)
-    
+
     var q = {};
     forIn(qu, function(k, v) {
       if (["type", "view"].indexOf(k) == -1) {
         q[k] = v;
       }
     });
-    
+
     if (qType == "newRows") {
       q.success = function(resp) {
         // $.log("runQuery newRows success", resp.rows.length, me, resp)
@@ -288,10 +288,10 @@ function $$(node) {
         userSuccess && userSuccess(resp);
       };
       // $.log(app)
-      app.view(viewName, q);      
+      app.view(viewName, q);
     }
   }
-  
+
   // this is for the items handler
   // var lastViewId, highKey, inFlight;
   // this needs to key per elem
@@ -316,7 +316,7 @@ function $$(node) {
       if (successCallback) {successCallback(resp, full)};
     };
     opts.success = successFun;
-    
+
     if (opts.descending) {
       thisViewId = view + (opts.startkey ? JSON.stringify(opts.startkey) : "");
     } else {
@@ -350,7 +350,7 @@ function $$(node) {
       app.view(view, opts);
     }
   };
-  
+
   // only start one changes listener per db
   function followChanges(app) {
     var dbName = app.db.name, changeEvent = function(resp) {
@@ -395,5 +395,5 @@ function $$(node) {
       }});
     }
   };
-  
+
 })(jQuery);

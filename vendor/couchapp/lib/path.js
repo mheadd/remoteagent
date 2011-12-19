@@ -26,7 +26,7 @@ function concatArgs(array, args) {
 
 function makePath(array) {
   var options, path;
-  
+
   if (typeof array[array.length - 1] != "string") {
     // it's a params hash
     options = array.pop();
@@ -35,7 +35,7 @@ function makePath(array) {
   if (options) {
     return path + encodeOptions(options);
   } else {
-    return path;    
+    return path;
   }
 };
 

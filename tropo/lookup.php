@@ -25,10 +25,10 @@ answer();
 
     // Look up the list of agents.
     $agentList = lookupAgent();
-    
+
     if($agentList) {
       $agents = json_decode($agentList);
-      
+
       // If no agents availalbe, tell the caller.
       if(count($agents->rows) == 0) {
         say("Sorry, no agents available.");
@@ -43,7 +43,7 @@ answer();
       }
     }
     // No response from CouchDB instance.
-    else 
+    else
       say("Sorry, no agents available.");
     }
   hangup();

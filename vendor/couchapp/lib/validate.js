@@ -2,8 +2,8 @@
 // over time we expect to extract more helpers and move them here.
 exports.init = function(newDoc, oldDoc, userCtx, secObj) {
   var v = {};
-  
-  v.forbidden = function(message) {    
+
+  v.forbidden = function(message) {
     throw({forbidden : message});
   };
 
@@ -14,11 +14,11 @@ exports.init = function(newDoc, oldDoc, userCtx, secObj) {
   v.assert = function(should, message) {
     if (!should) v.forbidden(message);
   }
-  
+
   v.isAdmin = function() {
     return userCtx.roles.indexOf('_admin') != -1
   };
-  
+
   v.isRole = function(role) {
     return userCtx.roles.indexOf(role) != -1
   };
@@ -32,14 +32,14 @@ exports.init = function(newDoc, oldDoc, userCtx, secObj) {
   };
 
   v.unchanged = function(field) {
-    if (oldDoc && oldDoc[field] != newDoc[field]) 
+    if (oldDoc && oldDoc[field] != newDoc[field])
       v.forbidden("You may not change the '"+field+"' field.");
   };
 
   v.matches = function(field, regex, message) {
     if (!newDoc[field].match(regex)) {
       message = message || "Format of '"+field+"' field is invalid.";
-      v.forbidden(message);    
+      v.forbidden(message);
     }
   };
 
@@ -48,6 +48,6 @@ exports.init = function(newDoc, oldDoc, userCtx, secObj) {
     message = "Sorry, '"+field+"' is not a valid date format. Try: 2010-02-24T17:00:03.432Z";
     v.matches(field, /\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}(\.\d*)?Z/, message);
   }
-  
+
   return v;
 };
